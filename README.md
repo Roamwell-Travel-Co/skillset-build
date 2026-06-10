@@ -14,3 +14,4 @@ A DuoLingo clone with the Skillbit travel-prep feature built on top.
 - Frontend: React
 - Backend (week 2+): Node.js
 - Database (week 2+): PostgreSQL + Redis
+this is me
