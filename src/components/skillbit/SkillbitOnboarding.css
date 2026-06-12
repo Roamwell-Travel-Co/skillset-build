@@ -1,0 +1,300 @@
+.onboarding-overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(160deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.onboarding-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  max-width: 520px;
+  width: 100%;
+  padding: 40px 32px;
+}
+
+/* ── Transitions ── */
+.fade-in  { animation: fadeSlideIn 0.35s ease forwards; }
+.fade-out { animation: fadeSlideOut 0.35s ease forwards; }
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeSlideOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-20px); }
+}
+
+/* ── Screen 1: Logo ── */
+.screen-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.logo-pop {
+  animation: logoPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes logoPop {
+  0%   { opacity: 0; transform: scale(0.4) rotate(-4deg); }
+  60%  { transform: scale(1.08) rotate(1deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+.logo-text {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 72px;
+  font-weight: 900;
+  color: #58cc02;
+  text-shadow:
+    0 6px 0 #3a9e00,
+    0 8px 20px rgba(88, 204, 2, 0.4);
+  letter-spacing: -2px;
+  display: block;
+}
+
+.logo-tagline {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.3px;
+}
+
+/* ── Screens 2 & 3: Bubbie ── */
+.screen-bubbie {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+}
+
+.speech-bubble {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px 24px;
+  position: relative;
+  max-width: 420px;
+  width: 100%;
+  margin-bottom: 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  animation: bubbleIn 0.5s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+}
+
+@keyframes bubbleIn {
+  from { opacity: 0; transform: scale(0.85) translateY(-10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 10px solid transparent;
+  border-top-color: #ffffff;
+  border-bottom: 0;
+}
+
+.speech-bubble p {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #3c3c3c;
+  line-height: 1.6;
+  margin: 0;
+  text-align: center;
+}
+
+.bubbie-wrap {
+  margin-top: 8px;
+  animation: bubbieEntrance 0.6s cubic-bezier(0.34, 1.4, 0.64, 1) 0.1s both;
+}
+
+@keyframes bubbieEntrance {
+  from { opacity: 0; transform: translateY(30px) scale(0.85); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.bubbie-img {
+  width: 220px;
+  height: auto;
+  filter: drop-shadow(0 12px 24px rgba(0,0,0,0.35));
+  animation: bubbieFloat 3s ease-in-out 0.8s infinite;
+}
+
+@keyframes bubbieFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+/* ── Button ── */
+.onboarding-btn {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  color: #ffffff;
+  background-color: #58cc02;
+  border: none;
+  border-radius: 16px;
+  padding: 16px 48px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #3a9e00;
+  transition: transform 0.1s, box-shadow 0.1s;
+  letter-spacing: 0.4px;
+  margin-top: 8px;
+}
+
+.onboarding-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 0 #3a9e00;
+}
+
+.onboarding-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #3a9e00;
+}
+
+/* ── Input ── */
+.onboarding-input {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #3c3c3c;
+  background: #ffffff;
+  border: 3px solid #e5e5e5;
+  border-radius: 14px;
+  padding: 14px 18px;
+  width: 100%;
+  max-width: 380px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.onboarding-input:focus { border-color: #58cc02; }
+.onboarding-textarea { resize: none; line-height: 1.5; }
+
+.onboarding-btn:disabled {
+  background-color: #e5e5e5;
+  color: #afafaf;
+  box-shadow: 0 5px 0 #cccccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Calendar screen ── */
+.screen-calendar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.calendar {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.cal-title {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  color: #3c3c3c;
+}
+
+.cal-nav {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #58cc02;
+  cursor: pointer;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 8px;
+  transition: background 0.1s;
+}
+.cal-nav:hover { background: #f0f0f0; }
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.cal-dow {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  color: #afafaf;
+  text-align: center;
+  padding: 4px 0;
+  letter-spacing: 0.3px;
+}
+
+.cal-day {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #3c3c3c;
+  text-align: center;
+  padding: 8px 4px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s;
+}
+.cal-day:hover:not(.cal-day--past):not(.cal-day--empty) { background: #e8f9d5; color: #3a9e00; }
+.cal-day--empty { pointer-events: none; }
+.cal-day--past  { color: #cccccc; cursor: default; }
+.cal-day--selected { background: #58cc02 !important; color: #ffffff !important; border-radius: 50%; }
+
+.cal-confirm-btn { width: 100%; margin-top: 4px; }
+
+.bubbie-img--small { width: 160px; }
+
+/* ── Progress dots ── */
+.progress-dots {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  transition: background 0.3s, transform 0.3s;
+}
+
+.dot--active {
+  background: #58cc02;
+  transform: scale(1.3);
+}
+
+.dot--done {
+  background: rgba(88, 204, 2, 0.5);
+}

@@ -1,0 +1,180 @@
+.right-panel {
+  width: 350px;
+  flex-shrink: 0;
+  padding: 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rp-card {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 18px 20px;
+  color: #3c3c3c;
+  border: 2px solid #e5e5e5;
+}
+
+.rp-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.rp-card-row-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.rp-icon {
+  font-size: 30px;
+  flex-shrink: 0;
+}
+
+.rp-icon--shield {
+  opacity: 0.35;
+}
+
+.rp-card-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #3c3c3c;
+  line-height: 1.3;
+  font-family: 'duolingo-sans', sans-serif;
+}
+
+.rp-card-sub {
+  font-size: 14px;
+  font-weight: 600;
+  color: #777777;
+  margin-top: 4px;
+  line-height: 1.4;
+  font-family: 'duolingo-sans', sans-serif;
+}
+
+.rp-view-all {
+  font-size: 13px;
+  font-weight: 800;
+  color: #1cb0f6;
+  text-decoration: none;
+  letter-spacing: 0.3px;
+  font-family: 'duolingo-sans', sans-serif;
+}
+
+.rp-quest-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rp-quest-info {
+  flex: 1;
+}
+
+.rp-quest-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #3c3c3c;
+  margin-bottom: 8px;
+  font-family: 'duolingo-sans', sans-serif;
+}
+
+.rp-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rp-progress-bar {
+  flex: 1;
+  height: 12px;
+  background-color: #e5e5e5;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.rp-progress-fill {
+  height: 100%;
+  background-color: #58cc02;
+  border-radius: 20px;
+  transition: width 0.3s ease;
+}
+
+.rp-progress-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #afafaf;
+  white-space: nowrap;
+  font-family: 'duolingo-sans', sans-serif;
+}
+
+.rp-chest-icon {
+  font-size: 22px;
+}
+
+.rp-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: filter 0.12s ease, transform 0.1s ease;
+}
+
+.rp-btn:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.rp-btn:active {
+  transform: translateY(1px);
+}
+
+.rp-btn:last-child {
+  margin-bottom: 0;
+}
+
+.rp-btn--green {
+  background-color: #58cc02;
+  color: #ffffff;
+  box-shadow: 0 4px 0 #46a302;
+}
+
+.rp-btn--blue {
+  background-color: #1cb0f6;
+  color: #ffffff;
+  box-shadow: 0 4px 0 #0891d4;
+}
+
+.rp-footer {
+  margin-top: 8px;
+  padding: 0 4px;
+}
+
+.rp-footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-bottom: 6px;
+}
+
+.rp-footer-row a {
+  font-size: 11px;
+  font-weight: 700;
+  color: #afafaf;
+  text-decoration: none;
+  letter-spacing: 0.3px;
+  font-family: 'duolingo-sans', sans-serif;
+}
+
+.rp-footer-row a:hover {
+  color: #3c3c3c;
+}

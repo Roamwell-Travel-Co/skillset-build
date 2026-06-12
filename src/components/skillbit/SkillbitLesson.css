@@ -1,0 +1,572 @@
+/* ── Shell ── */
+.lesson-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #1c1d1e;
+  min-height: 100vh;
+  color: #ffffff;
+}
+
+/* ── Top bar ── */
+.lesson-topbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  border-bottom: 2px solid #2a2b2d;
+}
+
+.lesson-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #5a5a5a;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  transition: color 0.1s;
+}
+.lesson-close:hover { color: #999; }
+
+.lesson-topbar-mid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lesson-streak {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  color: #58cc02;
+  letter-spacing: 0.8px;
+  text-align: center;
+}
+.lesson-streak--gold { color: #ffd900; }
+
+.lesson-progress-track {
+  flex: 1;
+  height: 16px;
+  background: #2a2b2d;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.lesson-progress-fill {
+  height: 100%;
+  background: #58cc02;
+  border-radius: 20px;
+  transition: width 0.4s ease;
+}
+
+.lesson-hearts {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.lesson-heart-emoji { font-size: 20px; }
+.lesson-heart-num {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 17px;
+  font-weight: 900;
+  color: #ff4b4b;
+}
+
+/* ── Body ── */
+.lesson-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 32px 48px;
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.lesson-instruction {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 28px;
+}
+
+/* ── Translate: prompt card ── */
+.lesson-prompt {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  background: #2a2b2d;
+  border-radius: 16px;
+  padding: 18px 22px;
+  border: 2px solid #3a3b3d;
+}
+.lesson-speaker {
+  font-size: 26px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  flex-shrink: 0;
+  transition: transform 0.1s;
+}
+.lesson-speaker:hover { transform: scale(1.15); }
+.lesson-english {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* ── Option list ── */
+.lesson-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.lesson-option {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #e5e5e5;
+  background: #2a2b2d;
+  border: 2px solid #3a3b3d;
+  border-radius: 14px;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.1s, background 0.1s, transform 0.08s;
+  box-shadow: 0 3px 0 #111;
+  overflow: hidden;
+}
+.lesson-option:hover:not(:disabled) {
+  border-color: #5a5a6a;
+  background: #33343a;
+  transform: translateY(-1px);
+}
+.option-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 100%;
+  min-height: 56px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #6a6a7a;
+  border-right: 2px solid #3a3b3d;
+  flex-shrink: 0;
+  font-family: 'duolingo-sans', sans-serif;
+}
+.option-text {
+  flex: 1;
+  padding: 18px 16px;
+  line-height: 1.3;
+}
+
+/* Selected */
+.lesson-option--selected {
+  border-color: #84d8ff !important;
+  background: #1e3a4a !important;
+  box-shadow: 0 3px 0 #0e6a8a !important;
+}
+.lesson-option--selected .option-badge {
+  color: #84d8ff;
+  border-right-color: #84d8ff;
+}
+.lesson-option--selected .option-text { color: #84d8ff; }
+
+/* Correct */
+.lesson-option--correct {
+  border-color: #58cc02 !important;
+  background: #1e3a00 !important;
+  box-shadow: 0 3px 0 #2d6900 !important;
+}
+.lesson-option--correct .option-badge { color: #58cc02; border-right-color: #58cc02; }
+.lesson-option--correct .option-text  { color: #58cc02; }
+
+/* Wrong */
+.lesson-option--wrong {
+  border-color: #ff4b4b !important;
+  background: #3a1010 !important;
+  box-shadow: 0 3px 0 #8a0000 !important;
+}
+.lesson-option--wrong .option-badge { color: #ff4b4b; border-right-color: #ff4b4b; }
+.lesson-option--wrong .option-text  { color: #ff4b4b; }
+
+/* ── Select Meaning: character area ── */
+.sm-area {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+  margin-bottom: 28px;
+}
+.sm-bubbie {
+  height: 130px;
+  width: auto;
+  flex-shrink: 0;
+  animation: bubbieFloat 3s ease-in-out infinite;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.6));
+}
+@keyframes bubbieFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+.sm-bubble {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #2a2b2d;
+  border: 2px solid #3a3b3d;
+  border-radius: 18px;
+  padding: 16px 20px;
+  margin-left: 16px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  position: relative;
+}
+.sm-bubble::before {
+  content: '';
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 7px solid transparent;
+  border-right-color: #3a3b3d;
+}
+.sm-speaker {
+  font-size: 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.1s;
+}
+.sm-speaker:hover { transform: scale(1.15); }
+.sm-phrase {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 26px;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+/* ── Tap What You Hear ── */
+.tap-audio-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.tap-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.1s, filter 0.1s;
+  background: #1cb0f6;
+  box-shadow: 0 4px 0 #0891d4;
+  color: white;
+}
+.tap-btn:hover { filter: brightness(1.08); transform: translateY(-2px); }
+.tap-btn:active { transform: translateY(2px); }
+.tap-btn--lg {
+  width: 80px;
+  height: 80px;
+  font-size: 32px;
+  border-radius: 20px;
+}
+.tap-btn--sm {
+  width: 56px;
+  height: 56px;
+  font-size: 14px;
+  border-radius: 14px;
+  flex-direction: column;
+  align-self: flex-end;
+}
+
+.tap-drop-zone {
+  min-height: 56px;
+  border-bottom: 2px solid #3a3b3d;
+  margin-bottom: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding-bottom: 12px;
+}
+.tap-drop-placeholder {
+  width: 80px;
+  height: 2px;
+  background: #3a3b3d;
+  border-radius: 2px;
+}
+.tap-divider {
+  height: 1px;
+  background: #2a2b2d;
+  margin-bottom: 24px;
+}
+.tap-word-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tap-tile {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #e5e5e5;
+  background: #2a2b2d;
+  border: 2px solid #4a4b4d;
+  border-radius: 12px;
+  padding: 10px 18px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #111;
+  transition: transform 0.08s, border-color 0.1s;
+}
+.tap-tile:hover:not(:disabled) { transform: translateY(-1px); border-color: #6a6a7a; }
+.tap-tile--placed {
+  background: #1e3a4a;
+  border-color: #84d8ff;
+  box-shadow: 0 3px 0 #0e6a8a;
+  color: #84d8ff;
+}
+.tap-tile--used {
+  opacity: 0.35;
+  cursor: default;
+}
+.tap-tile--correct {
+  border-color: #58cc02 !important;
+  background: #1e3a00 !important;
+  color: #58cc02 !important;
+}
+
+/* ── Complete the Chat ── */
+.chat-scene {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.chat-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+.chat-row--right { flex-direction: row-reverse; }
+.chat-char {
+  height: 72px;
+  width: auto;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+}
+.chat-avatar {
+  font-size: 36px;
+  flex-shrink: 0;
+}
+.chat-bubble {
+  background: #2a2b2d;
+  border: 2px solid #3a3b3d;
+  border-radius: 18px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #ffffff;
+  max-width: 260px;
+}
+.chat-bubble--right { border-radius: 18px 18px 4px 18px; }
+.chat-bubble--left  { border-radius: 18px 18px 18px 4px; }
+.chat-bubble--filled {
+  border-color: #58cc02;
+  background: #1e3a00;
+  color: #58cc02;
+}
+.chat-blank { color: #4a4b4d; }
+.chat-speaker {
+  font-size: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.1s;
+}
+.chat-speaker:hover { transform: scale(1.15); }
+
+/* ── Bottom / Check button ── */
+.lesson-bottom {
+  padding: 20px 48px;
+  border-top: 2px solid #2a2b2d;
+}
+.lesson-btn {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  border: none;
+  border-radius: 14px;
+  padding: 16px 48px;
+  cursor: pointer;
+  transition: filter 0.1s, transform 0.08s;
+  min-width: 200px;
+  text-transform: uppercase;
+}
+.lesson-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.lesson-btn:active { transform: translateY(1px); }
+.lesson-btn--green {
+  background: #58cc02;
+  color: #ffffff;
+  box-shadow: 0 4px 0 #3a9e00;
+}
+.lesson-btn--gray {
+  background: #2a2b2d;
+  color: #4a4b4d;
+  box-shadow: 0 4px 0 #111;
+  cursor: not-allowed;
+}
+.lesson-btn--red {
+  background: #ff4b4b;
+  color: #ffffff;
+  box-shadow: 0 4px 0 #8a0000;
+}
+
+/* ── Feedback banner ── */
+.lesson-feedback {
+  padding: 22px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-top: 2px solid transparent;
+  animation: feedSlide 0.25s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+}
+@keyframes feedSlide {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.lesson-feedback--correct {
+  background: #1a3a00;
+  border-color: #2a6900;
+}
+.lesson-feedback--wrong {
+  background: #3a1010;
+  border-color: #7a1515;
+}
+.lesson-feedback-left { flex: 1; }
+.lesson-feedback-label {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+.lesson-feedback--correct .lesson-feedback-label { color: #58cc02; }
+.lesson-feedback--wrong   .lesson-feedback-label { color: #ff4b4b; }
+.lesson-feedback-answer {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ff6e6e;
+  margin-bottom: 4px;
+}
+.lesson-feedback-hint {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #7a7a8a;
+}
+
+/* ── Done screen ── */
+.lesson-done {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1c1d1e;
+  min-height: 100vh;
+}
+.done-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  padding: 40px;
+}
+.done-bubbie {
+  height: 160px;
+  width: auto;
+  animation: starPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, bubbieFloat 3s 0.6s ease-in-out infinite;
+  filter: drop-shadow(0 12px 24px rgba(0,0,0,0.7));
+}
+@keyframes starPop {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+.done-title {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 36px;
+  font-weight: 900;
+  color: #ffd900;
+}
+.done-sub {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #7a7a8a;
+}
+.done-stats {
+  display: flex;
+  gap: 16px;
+  margin: 8px 0 16px;
+}
+.done-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 16px;
+  padding: 16px 28px;
+  border: 3px solid transparent;
+  min-width: 130px;
+}
+.done-stat--yellow {
+  background: #2a2000;
+  border-color: #ffd900;
+}
+.done-stat--green {
+  background: #1a3a00;
+  border-color: #58cc02;
+}
+.done-stat-label {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #7a7a8a;
+  margin-bottom: 8px;
+}
+.done-stat--yellow .done-stat-label { color: #ffd900; }
+.done-stat--green  .done-stat-label { color: #58cc02; }
+.done-stat-val {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 24px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.done-stat--yellow .done-stat-val { color: #ffd900; }
+.done-stat--green  .done-stat-val { color: #58cc02; }

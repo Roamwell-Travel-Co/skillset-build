@@ -1,0 +1,26 @@
+@font-face {
+  font-family: 'duolingo-sans';
+  src: url('/fonts/duolingo-sans-bold.woff2') format('woff2');
+  font-weight: 700 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'duolingo-sans';
+  src: url('/fonts/duolingo-sans-regular.woff2') format('woff2');
+  font-weight: 400 600;
+  font-style: normal;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'duolingo-sans', sans-serif;
+  background-color: #1b1b1b;
+  color: #ffffff;
+  min-height: 100vh;
+}
