@@ -2,11 +2,32 @@ import { useState, useEffect } from 'react'
 import { quizzes } from '../../data/quizzes'
 import './SkillbitLesson.css'
 
+/* ── Voice engine ─────────────────────────────────────────────────
+   Loads voices once after onvoiceschanged fires, then picks the
+   best fr-FR voice explicitly so we never fall back to English. */
+let _frVoice = null
+
+function loadFrVoice() {
+  const all = window.speechSynthesis.getVoices()
+  _frVoice = all.find(v => v.lang === 'fr-FR' && v.name === 'Thomas')
+    || all.find(v => v.lang === 'fr-FR' && v.name === 'Marie')
+    || all.find(v => v.lang === 'fr-FR' && !v.name.includes('('))
+    || all.find(v => v.lang === 'fr-FR')
+    || null
+}
+
+if (window.speechSynthesis.getVoices().length > 0) {
+  loadFrVoice()
+} else {
+  window.speechSynthesis.onvoiceschanged = loadFrVoice
+}
+
 function speak(text, rate = 0.85) {
   window.speechSynthesis.cancel()
   const u = new SpeechSynthesisUtterance(text)
   u.lang = 'fr-FR'
   u.rate = rate
+  if (_frVoice) u.voice = _frVoice
   window.speechSynthesis.speak(u)
 }
 
@@ -20,13 +41,18 @@ export default function SkillbitLesson({ tripInfo, onExit }) {
   const [streak, setStreak]       = useState(0)
   const [correctCount, setCorrectCount] = useState(0)
   const [done, setDone]           = useState(false)
+  const [speakerPulse, setSpeakerPulse] = useState(false)
 
   const q        = questions[qIndex]
   const progress = (qIndex / questions.length) * 100
 
+  // For tap-what-you-hear: pulse the speaker button to invite the user
+  // to click it. Browsers block audio not triggered by a direct gesture.
   useEffect(() => {
+    setSpeakerPulse(false)
     if (q.type === 'tap-what-you-hear') {
-      setTimeout(() => speak(q.audio), 600)
+      const t = setTimeout(() => setSpeakerPulse(true), 400)
+      return () => clearTimeout(t)
     }
   }, [qIndex])
 
@@ -118,7 +144,7 @@ export default function SkillbitLesson({ tripInfo, onExit }) {
       <div className="lesson-body">
         {q.type === 'translate'         && <TranslateQ        q={q} selected={selected} checked={checked} onSelect={setSelected} />}
         {q.type === 'select-meaning'    && <SelectMeaningQ    q={q} selected={selected} checked={checked} onSelect={setSelected} />}
-        {q.type === 'tap-what-you-hear' && <TapWhatYouHearQ   q={q} tapped={tapped}     checked={checked} onTile={toggleTile} />}
+        {q.type === 'tap-what-you-hear' && <TapWhatYouHearQ   q={q} tapped={tapped}     checked={checked} onTile={toggleTile} pulse={speakerPulse} onSpeak={() => { setSpeakerPulse(false); speak(q.audio, 0.85) }} />}
         {q.type === 'complete-chat'     && <CompleteChatQ     q={q} selected={selected} checked={checked} onSelect={setSelected} />}
       </div>
 
@@ -180,12 +206,15 @@ function SelectMeaningQ({ q, selected, checked, onSelect }) {
 }
 
 /* ── Question type: Tap What You Hear ── */
-function TapWhatYouHearQ({ q, tapped, checked, onTile }) {
+function TapWhatYouHearQ({ q, tapped, checked, onTile, pulse, onSpeak }) {
   return (
     <>
       <p className="lesson-instruction">Tap what you hear</p>
       <div className="tap-audio-row">
-        <button className="tap-btn tap-btn--lg" onClick={() => speak(q.audio, 0.85)}>
+        <button
+          className={`tap-btn tap-btn--lg ${pulse ? 'tap-btn--pulse' : ''}`}
+          onClick={onSpeak}
+        >
           <span>🔊</span>
         </button>
         <button className="tap-btn tap-btn--sm" onClick={() => speak(q.audio, 0.45)}>
