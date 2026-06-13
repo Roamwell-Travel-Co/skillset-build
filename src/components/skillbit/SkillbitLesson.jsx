@@ -31,7 +31,7 @@ function speak(text, rate = 0.85) {
   window.speechSynthesis.speak(u)
 }
 
-export default function SkillbitLesson({ tripInfo, onExit }) {
+export default function SkillbitLesson({ tripInfo, onExit, onComplete }) {
   const questions = quizzes.france
   const [qIndex, setQIndex]       = useState(0)
   const [selected, setSelected]   = useState(null)
@@ -112,7 +112,10 @@ export default function SkillbitLesson({ tripInfo, onExit }) {
               <div className="done-stat-val"><span>🎯</span> {accuracy}%</div>
             </div>
           </div>
-          <button className="lesson-btn lesson-btn--green" onClick={onExit}>CONTINUE</button>
+          <button
+            className="lesson-btn lesson-btn--green"
+            onClick={() => (onComplete ? onComplete(correctCount * 5) : onExit())}
+          >CONTINUE</button>
         </div>
       </div>
     )

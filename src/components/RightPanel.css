@@ -99,7 +99,11 @@
   height: 100%;
   background-color: #58cc02;
   border-radius: 20px;
-  transition: width 0.3s ease;
+  transition: width 0.5s ease;
+}
+
+.rp-progress-fill--done {
+  background-color: #ffd900;
 }
 
 .rp-progress-label {

@@ -5,12 +5,14 @@ import SkillPath from './components/SkillPath'
 import RightPanel from './components/RightPanel'
 import SkillbitOnboarding from './components/skillbit/SkillbitOnboarding'
 import SkillbitLesson from './components/skillbit/SkillbitLesson'
+import { useProgress } from './hooks/useProgress'
 import './App.css'
 
 export default function App() {
   const [activePage, setActivePage]   = useState('learn')
-  const [skillbitPhase, setSkillbitPhase] = useState('onboarding') // onboarding | lesson
+  const [skillbitPhase, setSkillbitPhase] = useState('onboarding')
   const [tripInfo, setTripInfo]       = useState(null)
+  const { progress, addLessonXP, DAILY_XP_GOAL } = useProgress()
 
   function handleNav(id) {
     setActivePage(id)
@@ -22,34 +24,37 @@ export default function App() {
     setSkillbitPhase('lesson')
   }
 
+  function handleLessonComplete(xpEarned) {
+    addLessonXP(xpEarned)
+    setSkillbitPhase('onboarding')
+    setActivePage('learn')
+  }
+
   return (
     <div className="app-layout">
-      {/* Sidebar always visible unless inside a lesson */}
       {skillbitPhase !== 'lesson' && (
         <Sidebar activePage={activePage} onNav={handleNav} />
       )}
 
-      {/* Learn page */}
       {activePage === 'learn' && (
         <div className="main-content">
-          <TopBar />
+          <TopBar progress={progress} />
           <div className="center-and-right">
-            <SkillPath />
-            <RightPanel />
+            <SkillPath lessonsCompleted={progress.lessonsCompleted} />
+            <RightPanel progress={progress} dailyXPGoal={DAILY_XP_GOAL} />
           </div>
         </div>
       )}
 
-      {/* Skillbit — onboarding */}
       {activePage === 'skillbit' && skillbitPhase === 'onboarding' && (
         <SkillbitOnboarding onComplete={handleOnboardingComplete} />
       )}
 
-      {/* Skillbit — lesson (full screen, no sidebar) */}
       {activePage === 'skillbit' && skillbitPhase === 'lesson' && (
         <SkillbitLesson
           tripInfo={tripInfo}
           onExit={() => setSkillbitPhase('onboarding')}
+          onComplete={handleLessonComplete}
         />
       )}
     </div>

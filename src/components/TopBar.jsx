@@ -1,6 +1,10 @@
 import './TopBar.css'
 
-export default function TopBar() {
+export default function TopBar({ progress }) {
+  const xp      = progress?.totalXP ?? 0
+  const streak  = progress?.streak ?? 0
+  const hearts  = progress?.hearts ?? 5
+
   return (
     <div className="topbar">
       <div className="section-banner">
@@ -11,10 +15,10 @@ export default function TopBar() {
         <button className="guidebook-btn">📋 GUIDEBOOK</button>
       </div>
       <div className="stats-bar">
-        <span className="stat">🇮🇪</span>
-        <span className="stat streak">🔥 <span className="stat-value">0</span></span>
-        <span className="stat gems">💎 <span className="stat-value">500</span></span>
-        <span className="stat hearts">❤️ <span className="stat-value">5</span></span>
+        <span className="stat">🇫🇷</span>
+        <span className="stat streak">🔥 <span className="stat-value">{streak}</span></span>
+        <span className="stat gems">⚡ <span className="stat-value">{xp}</span></span>
+        <span className="stat hearts">❤️ <span className="stat-value">{hearts}</span></span>
       </div>
     </div>
   )
