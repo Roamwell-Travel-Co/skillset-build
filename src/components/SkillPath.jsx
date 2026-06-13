@@ -26,13 +26,12 @@ export default function SkillPath() {
 
         <div className="path-dots path-dots--down" />
 
-        {/* Chest + Bubbie — chest shifts left, Bubbie floats center-right */}
+        {/* Chest milestone */}
         <div className="chest-bubbie-row">
           <div className="chest-box">
             <div className="chest-lid" />
             <div className="chest-body" />
           </div>
-          <img src="/bubbie.png" alt="Bubbie" className="bubbie-path" />
         </div>
 
         <div className="path-dots path-dots--down" />

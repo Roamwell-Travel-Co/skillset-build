@@ -31,8 +31,8 @@ function speak(text, rate = 0.85) {
   window.speechSynthesis.speak(u)
 }
 
-export default function SkillbitLesson({ tripInfo, onExit, onComplete }) {
-  const questions = quizzes.france
+export default function SkillbitLesson({ tripInfo, questions: propQuestions, onExit, onComplete }) {
+  const questions = propQuestions || quizzes.france
   const [qIndex, setQIndex]       = useState(0)
   const [selected, setSelected]   = useState(null)
   const [tapped, setTapped]       = useState([])

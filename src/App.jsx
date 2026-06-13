@@ -6,12 +6,14 @@ import RightPanel from './components/RightPanel'
 import SkillbitOnboarding from './components/skillbit/SkillbitOnboarding'
 import SkillbitLesson from './components/skillbit/SkillbitLesson'
 import { useProgress } from './hooks/useProgress'
+import { generateQuiz } from './services/generateQuiz'
 import './App.css'
 
 export default function App() {
-  const [activePage, setActivePage]   = useState('learn')
-  const [skillbitPhase, setSkillbitPhase] = useState('onboarding')
-  const [tripInfo, setTripInfo]       = useState(null)
+  const [activePage, setActivePage]       = useState('learn')
+  const [skillbitPhase, setSkillbitPhase] = useState('onboarding') // onboarding | loading | lesson
+  const [tripInfo, setTripInfo]           = useState(null)
+  const [questions, setQuestions]         = useState(null)
   const { progress, addLessonXP, DAILY_XP_GOAL } = useProgress()
 
   function handleNav(id) {
@@ -19,8 +21,11 @@ export default function App() {
     if (id === 'skillbit') setSkillbitPhase('onboarding')
   }
 
-  function handleOnboardingComplete(info) {
+  async function handleOnboardingComplete(info) {
     setTripInfo(info)
+    setSkillbitPhase('loading')
+    const qs = await generateQuiz(info.destination, info.interests)
+    setQuestions(qs)
     setSkillbitPhase('lesson')
   }
 
@@ -32,10 +37,11 @@ export default function App() {
 
   return (
     <div className="app-layout">
-      {skillbitPhase !== 'lesson' && (
+      {skillbitPhase !== 'lesson' && skillbitPhase !== 'loading' && (
         <Sidebar activePage={activePage} onNav={handleNav} />
       )}
 
+      {/* Learn page */}
       {activePage === 'learn' && (
         <div className="main-content">
           <TopBar progress={progress} />
@@ -46,17 +52,39 @@ export default function App() {
         </div>
       )}
 
+      {/* Skillbit — onboarding */}
       {activePage === 'skillbit' && skillbitPhase === 'onboarding' && (
         <SkillbitOnboarding onComplete={handleOnboardingComplete} />
       )}
 
+      {/* Skillbit — AI generating quiz */}
+      {activePage === 'skillbit' && skillbitPhase === 'loading' && (
+        <QuizLoadingScreen destination={tripInfo?.destination} />
+      )}
+
+      {/* Skillbit — lesson */}
       {activePage === 'skillbit' && skillbitPhase === 'lesson' && (
         <SkillbitLesson
           tripInfo={tripInfo}
-          onExit={() => setSkillbitPhase('onboarding')}
+          questions={questions}
+          onExit={() => { setSkillbitPhase('onboarding'); setActivePage('learn') }}
           onComplete={handleLessonComplete}
         />
       )}
+    </div>
+  )
+}
+
+/* ── Loading screen shown while Gemini generates the quiz ── */
+function QuizLoadingScreen({ destination }) {
+  return (
+    <div className="quiz-loading">
+      <img src="/bubbie.png" alt="Bubbie" className="quiz-loading-bubbie" />
+      <div className="quiz-loading-spinner" />
+      <p className="quiz-loading-title">Building your lesson…</p>
+      <p className="quiz-loading-sub">
+        Personalizing phrases for {destination || 'your trip'} ✈️
+      </p>
     </div>
   )
 }
