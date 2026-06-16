@@ -65,12 +65,16 @@ function CalendarPicker({ onSelect }) {
   )
 }
 
+const LANGUAGES = ['English', 'Spanish', 'Mandarin', 'Portuguese', 'French', 'German', 'Arabic', 'Hindi']
+
 export default function SkillbitOnboarding({ onComplete }) {
   const [step, setStep]           = useState('logo')
   const [animating, setAnimating] = useState(false)
   const [destination, setDestination] = useState('')
   const [tripDate, setTripDate]   = useState(null)
   const [interests, setInterests] = useState('')
+  const [nativeLanguage, setNativeLanguage] = useState('')
+  const [customLanguage, setCustomLanguage] = useState('')
 
   function go(next) {
     setAnimating(true)
@@ -83,7 +87,8 @@ export default function SkillbitOnboarding({ onComplete }) {
   }
 
   function handleFinish() {
-    onComplete({ destination, tripDate, interests })
+    const lang = nativeLanguage === 'Other' ? customLanguage.trim() : nativeLanguage
+    onComplete({ destination, tripDate, interests, nativeLanguage: lang || 'English' })
   }
 
   const days = tripDate ? daysBetween(tripDate) : 0
@@ -176,11 +181,51 @@ export default function SkillbitOnboarding({ onComplete }) {
             <div className="bubbie-wrap">
               <img src="/bubbie.png" alt="Bubbie" className="bubbie-img" />
             </div>
-            <button className="onboarding-btn" onClick={() => go('interests')}>Build my plan →</button>
+            <button className="onboarding-btn" onClick={() => go('language')}>Build my plan →</button>
           </div>
         )}
 
-        {/* ── Screen 7: Interests ── */}
+        {/* ── Screen 7: Native language ── */}
+        {step === 'language' && (
+          <div className="screen-bubbie">
+            <div className="speech-bubble">
+              <p>What language do you already speak? I'll build your lessons around it! 🗣️</p>
+            </div>
+            <div className="bubbie-wrap">
+              <img src="/bubbie.png" alt="Bubbie" className="bubbie-img bubbie-img--small" />
+            </div>
+            <div className="lang-chips">
+              {LANGUAGES.map(lang => (
+                <button
+                  key={lang}
+                  className={`lang-chip ${nativeLanguage === lang ? 'lang-chip--selected' : ''}`}
+                  onClick={() => setNativeLanguage(lang)}
+                >{lang}</button>
+              ))}
+              <button
+                className={`lang-chip ${nativeLanguage === 'Other' ? 'lang-chip--selected' : ''}`}
+                onClick={() => setNativeLanguage('Other')}
+              >Other</button>
+            </div>
+            {nativeLanguage === 'Other' && (
+              <input
+                className="onboarding-input"
+                type="text"
+                placeholder="Type your language…"
+                value={customLanguage}
+                onChange={e => setCustomLanguage(e.target.value)}
+                autoFocus
+              />
+            )}
+            <button
+              className="onboarding-btn"
+              disabled={!nativeLanguage || (nativeLanguage === 'Other' && !customLanguage.trim())}
+              onClick={() => go('interests')}
+            >Next →</button>
+          </div>
+        )}
+
+        {/* ── Screen 8: Interests ── */}
         {step === 'interests' && (
           <div className="screen-bubbie">
             <div className="speech-bubble">
@@ -210,8 +255,8 @@ export default function SkillbitOnboarding({ onComplete }) {
         {/* Progress dots */}
         {step !== 'calendar' && (
           <div className="progress-dots">
-            {['logo','problem','solution','destination','confirm','interests'].map((s) => {
-              const dotSteps = ['logo','problem','solution','destination','confirm','interests']
+            {['logo','problem','solution','destination','confirm','language','interests'].map((s) => {
+              const dotSteps = ['logo','problem','solution','destination','confirm','language','interests']
               const dotIdx = dotSteps.indexOf(s)
               return (
                 <div key={s} className={`dot ${step === s ? 'dot--active' : dotIdx < dotSteps.indexOf(step) ? 'dot--done' : ''}`} />

@@ -74,6 +74,14 @@
   box-shadow: 0 6px 0 #3a9e00;
 }
 
+.node--completed {
+  background-color: #58cc02;
+  box-shadow: 0 6px 0 #3a9e00;
+  font-size: 32px;
+  font-weight: 900;
+  color: #ffffff;
+}
+
 .node--locked {
   background-color: #3a3a3a;
   box-shadow: 0 6px 0 #222222;

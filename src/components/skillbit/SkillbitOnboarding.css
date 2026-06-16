@@ -298,3 +298,39 @@
 .dot--done {
   background: rgba(88, 204, 2, 0.5);
 }
+
+/* ── Language chip selector ── */
+.lang-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  max-width: 380px;
+  margin-top: 4px;
+}
+
+.lang-chip {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 40px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, transform 0.1s;
+}
+
+.lang-chip:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.lang-chip--selected {
+  background: #58cc02;
+  border-color: #58cc02;
+  color: #ffffff;
+  box-shadow: 0 4px 0 #3a9e00;
+}

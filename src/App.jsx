@@ -24,7 +24,7 @@ export default function App() {
   async function handleOnboardingComplete(info) {
     setTripInfo(info)
     setSkillbitPhase('loading')
-    const qs = await generateQuiz(info.destination, info.interests)
+    const qs = await generateQuiz(info.destination, info.interests, info.nativeLanguage)
     setQuestions(qs)
     setSkillbitPhase('lesson')
   }

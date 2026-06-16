@@ -20,8 +20,8 @@ function quizApiPlugin() {
         req.on('data', chunk => chunks.push(chunk))
         req.on('end', () => {
           try {
-            const { destination, interests } = JSON.parse(Buffer.concat(chunks).toString())
-            const prompt = buildQuizPrompt(destination, interests)
+            const { destination, interests, nativeLanguage = 'English' } = JSON.parse(Buffer.concat(chunks).toString())
+            const prompt = buildQuizPrompt(destination, interests, nativeLanguage)
             const payload = JSON.stringify({ messages: [{ role: 'user', content: prompt }] })
 
             // spawnSync avoids all shell-escaping issues with complex payloads
@@ -90,11 +90,18 @@ function quizApiPlugin() {
   }
 }
 
-function buildQuizPrompt(destination, interests) {
+function buildQuizPrompt(destination, interests, nativeLanguage = 'English') {
   return `You are a language quiz builder for the travel app SkillBit.
 
 Destination: "${destination}"
+User's native language: "${nativeLanguage}"
 User interests: "${interests}"
+
+The user speaks ${nativeLanguage}. Build the lesson so they practice translating FROM ${nativeLanguage} INTO the destination's language.
+- "english" fields and option descriptions should be in ${nativeLanguage} (since that's what the user understands)
+- Foreign phrases, "phrase", "audio", and "promptAudio" should be in the destination language
+- For "select-meaning" questions, the user sees a foreign word and picks the meaning in ${nativeLanguage}
+- For "complete-chat" questions, the local speaks in the destination language, user picks the correct reply in the destination language
 
 Return a JSON array of EXACTLY 8 quiz questions. Go DEEP on ONE specific travel scene (e.g. "ordering at a café") relevant to the destination and interests. Build from easy to hard. Stop at exactly 8 — do not exceed this.
 
