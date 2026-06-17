@@ -107,10 +107,13 @@ Every question must show the user something in ${nativeLanguage} BEFORE showing 
 
 QUESTION TYPES — use ALL four types across the 8 questions, with at least 2 of types 3 and 4:
 
+Every question MUST include a "scenario" field: 1–2 sentences in ${nativeLanguage} describing the exact real-life moment the user is in right now — specific enough to be useful. Bad example: "You are in a café." Good example: "You've just spotted a café near the Eiffel Tower and you want to sit down and order. A waiter walks over." Make every scenario feel immersive and tied to the destination and the user's interests.
+
 TYPE 1 — "translate"
 The user reads a sentence in ${nativeLanguage} and picks the correct target-language translation.
 Fields:
   "type": "translate"
+  "scenario": 1–2 sentences in ${nativeLanguage} setting the real-life scene for this question
   "instruction": a short phrase in ${nativeLanguage} that means "Translate this sentence" — write it in ${nativeLanguage}
   "english": the sentence the user needs to translate, written entirely in ${nativeLanguage}
   "phrase": the correct target-language translation (used for context only)
@@ -123,6 +126,7 @@ TYPE 2 — "select-meaning"
 The user sees a single target-language word or short phrase and picks its meaning in ${nativeLanguage}.
 Fields:
   "type": "select-meaning"
+  "scenario": 1–2 sentences in ${nativeLanguage} setting the real-life scene for this question
   "instruction": a short phrase in ${nativeLanguage} that means "What does this word mean?"
   "prompt": one target-language word or short phrase
   "audio": same as prompt — plain text only, no URLs
@@ -134,6 +138,7 @@ TYPE 3 — "tap-what-you-hear"
 The user hears a target-language phrase and taps it from a small word bank.
 Fields:
   "type": "tap-what-you-hear"
+  "scenario": 1–2 sentences in ${nativeLanguage} setting the real-life scene for this question
   "instruction": a short phrase in ${nativeLanguage} that means "Tap what you hear"
   "audio": the target-language phrase to be spoken — plain text only, no URLs
   "phrase": same as audio
@@ -145,6 +150,7 @@ TYPE 4 — "complete-chat"
 A local speaks to the user in the target language. The user picks the correct reply.
 Fields:
   "type": "complete-chat"
+  "scenario": 1–2 sentences in ${nativeLanguage} setting the real-life scene — describe where the user is and who is speaking to them
   "instruction": a short phrase in ${nativeLanguage} that means "How do you respond?"
   "prompt": what the local says — written in the target language (a real travel situation: ordering, paying, directions, etc.)
   "promptAudio": same as prompt — plain text only, no URLs

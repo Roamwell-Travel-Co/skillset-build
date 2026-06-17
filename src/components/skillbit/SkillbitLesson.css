@@ -95,6 +95,33 @@
   margin-bottom: 28px;
 }
 
+/* ── Scenario setup card ── */
+.scenario-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #1e2a3a;
+  border: 1.5px solid #2a4060;
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+}
+
+.scenario-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  line-height: 1.5;
+}
+
+.scenario-text {
+  font-family: 'duolingo-sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #a8c8f0;
+  line-height: 1.55;
+  margin: 0;
+}
+
 /* ── Translate: prompt card ── */
 .lesson-prompt {
   display: flex;

@@ -145,6 +145,19 @@ function instruct(type, nativeLang) {
   return map[nativeLang] || map['English'] || 'Answer the question'
 }
 
+/* ── Scenario setup card ─────────────────────────────────────
+   Shown at the top of every question to describe the real-life
+   situation the user is in before they answer.                  */
+function ScenarioCard({ scenario }) {
+  if (!scenario) return null
+  return (
+    <div className="scenario-card">
+      <span className="scenario-icon">📍</span>
+      <p className="scenario-text">{scenario}</p>
+    </div>
+  )
+}
+
 /* ── Scene label for chat questions ─────────────────────────── */
 function getSceneLabel(prompt) {
   const p = (prompt || '').toLowerCase()
@@ -330,6 +343,7 @@ function TranslateQ({ q, selected, checked, onSelect, lang, nativeLang }) {
   return (
     <>
       <p className="lesson-instruction">{q.instruction || instruct('translate', nativeLang)}</p>
+      <ScenarioCard scenario={q.scenario} />
       <div className="lesson-prompt">
         <button className="lesson-speaker" onClick={() => speak(q.audio, lang)}>🔊</button>
         <p className="lesson-english">{q.english}</p>
@@ -344,6 +358,7 @@ function SelectMeaningQ({ q, selected, checked, onSelect, lang, nativeLang }) {
   return (
     <>
       <p className="lesson-instruction">{q.instruction || instruct('select-meaning', nativeLang)}</p>
+      <ScenarioCard scenario={q.scenario} />
       <div className="sm-area">
         <img src="/bubbie.png" alt="Bubbie" className="sm-bubbie" />
         <div className="sm-bubble" onClick={() => speak(q.audio, lang)}>
@@ -361,6 +376,7 @@ function TapWhatYouHearQ({ q, tapped, checked, onTile, pulse, onSpeak, lang, nat
   return (
     <>
       <p className="lesson-instruction">{q.instruction || instruct('tap-what-you-hear', nativeLang)}</p>
+      <ScenarioCard scenario={q.scenario} />
       <div className="tap-audio-row">
         <button className={`tap-btn tap-btn--lg ${pulse ? 'tap-btn--pulse' : ''}`} onClick={onSpeak}>
           <span>🔊</span>
@@ -395,6 +411,7 @@ function CompleteChatQ({ q, selected, checked, onSelect, lang, nativeLang }) {
   return (
     <>
       <p className="lesson-instruction">{q.instruction || instruct('complete-chat', nativeLang)}</p>
+      <ScenarioCard scenario={q.scenario} />
       <div className="chat-scene-label">{getSceneLabel(q.prompt)}</div>
       <div className="chat-scene">
         <div className="chat-row chat-row--left">
