@@ -97,11 +97,14 @@ Destination: "${destination}"
 User's native language: "${nativeLanguage}"
 User interests: "${interests}"
 
-The user speaks ${nativeLanguage}. Build the lesson so they practice translating FROM ${nativeLanguage} INTO the destination's language.
-- "english" fields and option descriptions should be in ${nativeLanguage} (since that's what the user understands)
-- Foreign phrases, "phrase", "audio", and "promptAudio" should be in the destination language
-- For "select-meaning" questions, the user sees a foreign word and picks the meaning in ${nativeLanguage}
-- For "complete-chat" questions, the local speaks in the destination language, user picks the correct reply in the destination language
+NATIVE-LANGUAGE-FIRST RULE — this is the most important rule and overrides everything else:
+The user's native language is ${nativeLanguage}. Every question must show ${nativeLanguage} FIRST so the user understands what they are being asked, then show the foreign language they are learning.
+
+Apply this rule to each question type:
+- "translate": "english" MUST be a complete sentence written in ${nativeLanguage} (e.g. if nativeLanguage is Spanish, write the sentence in Spanish). The 4 "options" are all in the destination language. The user reads ${nativeLanguage} and picks the matching foreign translation.
+- "select-meaning": "prompt" is one foreign word or short phrase. ALL "options" MUST be written in ${nativeLanguage} — the user picks the ${nativeLanguage} meaning of the foreign word.
+- "tap-what-you-hear": "audio", "phrase", and "wordTiles" are all in the destination language. "feedback" MUST be written in ${nativeLanguage} explaining what was heard.
+- "complete-chat": "prompt" is what a local says (in the destination language). "options" are foreign-language replies the user can choose. "feedback" MUST start with the ${nativeLanguage} translation of both the prompt and the correct reply so the user understands what happened.
 
 Return a JSON array of EXACTLY 8 quiz questions. Go DEEP on ONE specific travel scene (e.g. "ordering at a café") relevant to the destination and interests. Build from easy to hard. Stop at exactly 8 — do not exceed this.
 

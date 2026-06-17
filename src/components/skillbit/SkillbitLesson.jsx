@@ -96,6 +96,55 @@ function BubbieReaction({ reaction }) {
   )
 }
 
+/* ── Instruction text in the user's native language ─────────── */
+const INSTRUCT = {
+  translate: {
+    English: 'Translate this sentence',
+    Spanish: 'Traduce esta oración',
+    French: 'Traduisez cette phrase',
+    German: 'Übersetze diesen Satz',
+    Portuguese: 'Traduza esta frase',
+    Mandarin: '翻译这个句子',
+    Arabic: 'ترجم هذه الجملة',
+    Hindi: 'इस वाक्य का अनुवाद करें',
+  },
+  'select-meaning': {
+    English: 'What does this word mean?',
+    Spanish: '¿Qué significa esta palabra?',
+    French: 'Que signifie ce mot ?',
+    German: 'Was bedeutet dieses Wort?',
+    Portuguese: 'O que significa esta palavra?',
+    Mandarin: '这个词是什么意思？',
+    Arabic: 'ماذا تعني هذه الكلمة؟',
+    Hindi: 'इस शब्द का क्या अर्थ है?',
+  },
+  'tap-what-you-hear': {
+    English: 'Tap what you hear',
+    Spanish: 'Toca lo que escuchas',
+    French: 'Appuyez sur ce que vous entendez',
+    German: 'Tippe, was du hörst',
+    Portuguese: 'Toque o que você ouve',
+    Mandarin: '点击你听到的',
+    Arabic: 'انقر على ما تسمع',
+    Hindi: 'जो सुनें उसे टैप करें',
+  },
+  'complete-chat': {
+    English: 'How do you respond?',
+    Spanish: '¿Cómo respondes?',
+    French: 'Comment répondez-vous ?',
+    German: 'Wie antwortest du?',
+    Portuguese: 'Como você responde?',
+    Mandarin: '你怎么回答？',
+    Arabic: 'كيف تجيب؟',
+    Hindi: 'आप कैसे जवाब देते हैं?',
+  },
+}
+
+function instruct(type, nativeLang) {
+  const map = INSTRUCT[type] || {}
+  return map[nativeLang] || map['English'] || 'Answer the question'
+}
+
 /* ── Scene label for chat questions ─────────────────────────── */
 function getSceneLabel(prompt) {
   const p = (prompt || '').toLowerCase()
@@ -112,8 +161,9 @@ function getSceneLabel(prompt) {
 
 /* ── Main component ──────────────────────────────────────────── */
 export default function SkillbitLesson({ tripInfo, questions: propQuestions, onExit, onComplete }) {
-  const questions = propQuestions || quizzes.france
-  const lang      = detectLang(tripInfo?.destination)
+  const questions  = propQuestions || quizzes.france
+  const lang       = detectLang(tripInfo?.destination)
+  const nativeLang = tripInfo?.nativeLanguage || 'English'
 
   const [qIndex, setQIndex]           = useState(0)
   const [selected, setSelected]       = useState(null)
@@ -242,11 +292,11 @@ export default function SkillbitLesson({ tripInfo, questions: propQuestions, onE
 
       {/* ── Body ── */}
       <div className="lesson-body">
-        {q.type === 'translate'         && <TranslateQ      q={q} selected={selected} checked={checked} onSelect={setSelected} lang={lang} />}
-        {q.type === 'select-meaning'    && <SelectMeaningQ  q={q} selected={selected} checked={checked} onSelect={setSelected} lang={lang} />}
-        {q.type === 'tap-what-you-hear' && <TapWhatYouHearQ q={q} tapped={tapped} checked={checked} onTile={toggleTile} pulse={speakerPulse} lang={lang}
+        {q.type === 'translate'         && <TranslateQ      q={q} selected={selected} checked={checked} onSelect={setSelected} lang={lang} nativeLang={nativeLang} />}
+        {q.type === 'select-meaning'    && <SelectMeaningQ  q={q} selected={selected} checked={checked} onSelect={setSelected} lang={lang} nativeLang={nativeLang} />}
+        {q.type === 'tap-what-you-hear' && <TapWhatYouHearQ q={q} tapped={tapped} checked={checked} onTile={toggleTile} pulse={speakerPulse} lang={lang} nativeLang={nativeLang}
             onSpeak={() => { setSpeakerPulse(false); speak(q.audio, lang, 0.85) }} />}
-        {q.type === 'complete-chat'     && <CompleteChatQ   q={q} selected={selected} checked={checked} onSelect={setSelected} lang={lang} />}
+        {q.type === 'complete-chat'     && <CompleteChatQ   q={q} selected={selected} checked={checked} onSelect={setSelected} lang={lang} nativeLang={nativeLang} />}
       </div>
 
       {/* ── Bottom ── */}
@@ -276,10 +326,10 @@ export default function SkillbitLesson({ tripInfo, questions: propQuestions, onE
 }
 
 /* ── Translate ── */
-function TranslateQ({ q, selected, checked, onSelect, lang }) {
+function TranslateQ({ q, selected, checked, onSelect, lang, nativeLang }) {
   return (
     <>
-      <p className="lesson-instruction">Translate this sentence</p>
+      <p className="lesson-instruction">{instruct('translate', nativeLang)}</p>
       <div className="lesson-prompt">
         <button className="lesson-speaker" onClick={() => speak(q.audio, lang)}>🔊</button>
         <p className="lesson-english">{q.english}</p>
@@ -290,10 +340,10 @@ function TranslateQ({ q, selected, checked, onSelect, lang }) {
 }
 
 /* ── Select Meaning ── */
-function SelectMeaningQ({ q, selected, checked, onSelect, lang }) {
+function SelectMeaningQ({ q, selected, checked, onSelect, lang, nativeLang }) {
   return (
     <>
-      <p className="lesson-instruction">Select the correct meaning</p>
+      <p className="lesson-instruction">{instruct('select-meaning', nativeLang)}</p>
       <div className="sm-area">
         <img src="/bubbie.png" alt="Bubbie" className="sm-bubbie" />
         <div className="sm-bubble" onClick={() => speak(q.audio, lang)}>
@@ -307,10 +357,10 @@ function SelectMeaningQ({ q, selected, checked, onSelect, lang }) {
 }
 
 /* ── Tap What You Hear ── */
-function TapWhatYouHearQ({ q, tapped, checked, onTile, pulse, onSpeak, lang }) {
+function TapWhatYouHearQ({ q, tapped, checked, onTile, pulse, onSpeak, lang, nativeLang }) {
   return (
     <>
-      <p className="lesson-instruction">Tap what you hear</p>
+      <p className="lesson-instruction">{instruct('tap-what-you-hear', nativeLang)}</p>
       <div className="tap-audio-row">
         <button className={`tap-btn tap-btn--lg ${pulse ? 'tap-btn--pulse' : ''}`} onClick={onSpeak}>
           <span>🔊</span>
@@ -341,10 +391,10 @@ function TapWhatYouHearQ({ q, tapped, checked, onTile, pulse, onSpeak, lang }) {
 }
 
 /* ── Complete the Chat ── */
-function CompleteChatQ({ q, selected, checked, onSelect, lang }) {
+function CompleteChatQ({ q, selected, checked, onSelect, lang, nativeLang }) {
   return (
     <>
-      <p className="lesson-instruction">Complete the chat</p>
+      <p className="lesson-instruction">{instruct('complete-chat', nativeLang)}</p>
       <div className="chat-scene-label">{getSceneLabel(q.prompt)}</div>
       <div className="chat-scene">
         <div className="chat-row chat-row--left">
