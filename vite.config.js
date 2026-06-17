@@ -91,78 +91,75 @@ function quizApiPlugin() {
 }
 
 function buildQuizPrompt(destination, interests, nativeLanguage = 'English') {
-  return `You are a language quiz builder for the travel app SkillBit.
+  return `You are a language coach building a quiz for the travel app SkillBit.
 
-Destination: "${destination}"
-User's native language: "${nativeLanguage}"
-User interests: "${interests}"
+USER INFO:
+- Native language: ${nativeLanguage}
+- Traveling to: ${destination}
+- Interests / context: ${interests}
 
-NATIVE-LANGUAGE-FIRST RULE — this is the most important rule and overrides everything else:
-The user's native language is ${nativeLanguage}. Every question must show ${nativeLanguage} FIRST so the user understands what they are being asked, then show the foreign language they are learning.
+YOUR JOB:
+Detect the primary language spoken at "${destination}" — that is the TARGET LANGUAGE for this lesson.
+The user already speaks ${nativeLanguage}. Teach them the TARGET LANGUAGE through 8 quiz questions.
 
-Apply this rule to each question type:
-- "translate": "english" MUST be a complete sentence written in ${nativeLanguage} (e.g. if nativeLanguage is Spanish, write the sentence in Spanish). The 4 "options" are all in the destination language. The user reads ${nativeLanguage} and picks the matching foreign translation.
-- "select-meaning": "prompt" is one foreign word or short phrase. ALL "options" MUST be written in ${nativeLanguage} — the user picks the ${nativeLanguage} meaning of the foreign word.
-- "tap-what-you-hear": "audio", "phrase", and "wordTiles" are all in the destination language. "feedback" MUST be written in ${nativeLanguage} explaining what was heard.
-- "complete-chat": "prompt" is what a local says (in the destination language). "options" are foreign-language replies the user can choose. "feedback" MUST start with the ${nativeLanguage} translation of both the prompt and the correct reply so the user understands what happened.
+CORE RULE — ${nativeLanguage} ALWAYS COMES FIRST:
+Every question must show the user something in ${nativeLanguage} BEFORE showing the target language, so they always understand what they are learning. This applies in every field described below.
 
-Return a JSON array of EXACTLY 8 quiz questions. Go DEEP on ONE specific travel scene (e.g. "ordering at a café") relevant to the destination and interests. Build from easy to hard. Stop at exactly 8 — do not exceed this.
+QUESTION TYPES — use ALL four types across the 8 questions, with at least 2 of types 3 and 4:
 
-CRITICAL: You must use EXACTLY these field names. Any deviation breaks the app.
+TYPE 1 — "translate"
+The user reads a sentence in ${nativeLanguage} and picks the correct target-language translation.
+Fields:
+  "type": "translate"
+  "instruction": a short phrase in ${nativeLanguage} that means "Translate this sentence" — write it in ${nativeLanguage}
+  "english": the sentence the user needs to translate, written entirely in ${nativeLanguage}
+  "phrase": the correct target-language translation (used for context only)
+  "audio": the target-language phrase spoken aloud — plain text only, no URLs
+  "options": array of 4 strings — all in the target language — 1 correct + 3 plausible wrong answers
+  "correct": must exactly match one of the options
+  "feedback": word-by-word breakdown in ${nativeLanguage} explaining what each word means
 
-QUESTION TYPE 1 — "translate"
-Pick ONE correct translation and THREE wrong ones. ALL four go in "options".
-{
-  "type": "translate",
-  "english": "One coffee, please.",
-  "phrase": "Un café, s'il vous plaît.",
-  "audio": "Un café s'il vous plaît",
-  "options": ["Un café, s'il vous plaît.", "Deux cafés, merci.", "L'addition, s'il vous plaît.", "Bonjour monsieur."],
-  "correct": "Un café, s'il vous plaît.",
-  "feedback": "Un = One · café = coffee · s'il vous plaît = please"
-}
+TYPE 2 — "select-meaning"
+The user sees a single target-language word or short phrase and picks its meaning in ${nativeLanguage}.
+Fields:
+  "type": "select-meaning"
+  "instruction": a short phrase in ${nativeLanguage} that means "What does this word mean?"
+  "prompt": one target-language word or short phrase
+  "audio": same as prompt — plain text only, no URLs
+  "options": array of 3 strings — ALL written in ${nativeLanguage} — 1 correct + 2 plausible wrong
+  "correct": the correct ${nativeLanguage} meaning, must match one of the options exactly
+  "feedback": written in ${nativeLanguage} — explain the word and give a memory tip
 
-QUESTION TYPE 2 — "select-meaning"
-Show one foreign word/phrase, user picks the English meaning.
-{
-  "type": "select-meaning",
-  "prompt": "l'addition",
-  "audio": "l'addition",
-  "options": ["the bill", "the menu", "the tip"],
-  "correct": "the bill",
-  "feedback": "L'addition = the bill — say this when ready to pay!"
-}
+TYPE 3 — "tap-what-you-hear"
+The user hears a target-language phrase and taps it from a small word bank.
+Fields:
+  "type": "tap-what-you-hear"
+  "instruction": a short phrase in ${nativeLanguage} that means "Tap what you hear"
+  "audio": the target-language phrase to be spoken — plain text only, no URLs
+  "phrase": same as audio
+  "wordTiles": array of 3–4 target-language choices including the correct one
+  "correct": must exactly match one of the wordTiles
+  "feedback": written in ${nativeLanguage} — translate and explain what was heard
 
-QUESTION TYPE 3 — "tap-what-you-hear"
-User hears the audio and taps the matching word from a small bank.
-{
-  "type": "tap-what-you-hear",
-  "audio": "Merci beaucoup",
-  "phrase": "Merci beaucoup",
-  "wordTiles": ["Merci beaucoup", "s'il vous plaît", "bonjour"],
-  "correct": "Merci beaucoup",
-  "feedback": "Merci beaucoup = Thank you very much!"
-}
+TYPE 4 — "complete-chat"
+A local speaks to the user in the target language. The user picks the correct reply.
+Fields:
+  "type": "complete-chat"
+  "instruction": a short phrase in ${nativeLanguage} that means "How do you respond?"
+  "prompt": what the local says — written in the target language (a real travel situation: ordering, paying, directions, etc.)
+  "promptAudio": same as prompt — plain text only, no URLs
+  "options": array of exactly 2 target-language replies — 1 correct + 1 wrong
+  "correct": must exactly match one of the options
+  "feedback": written entirely in ${nativeLanguage} — first translate what the local said, then explain what the correct reply means
 
-QUESTION TYPE 4 — "complete-chat"
-A local says something to the user. User picks the correct reply from exactly 2 options.
-{
-  "type": "complete-chat",
-  "prompt": "Vous désirez ?",
-  "promptAudio": "Vous désirez",
-  "options": ["Un café crème, s'il vous plaît.", "Bonne nuit !"],
-  "correct": "Un café crème, s'il vous plaît.",
-  "feedback": "Vous désirez = What would you like? The waiter is taking your order!"
-}
-
-RULES:
-- Use the destination's correct language (Japan → Japanese, Spain → Spanish, France → French, etc.)
-- "audio" and "promptAudio" MUST be plain spoken text ONLY — for example: "Bonjour" or "Un café s'il vous plaît". NEVER a URL, file path, or anything starting with http. The browser reads these strings aloud directly using text-to-speech.
-- Include at least 2 of type "tap-what-you-hear" and at least 2 of type "complete-chat"
-- "complete-chat" must be real travel situations: waiter taking order, paying the bill, asking for directions, buying a ticket
-- Do NOT use escaped single quotes like \\' inside strings — use regular apostrophes or reword
-- Do NOT wrap the output in markdown code fences
-- Return ONLY the raw JSON array starting with [ and ending with ]`
+OUTPUT RULES:
+- Detect destination language automatically — never default to a wrong language
+- "audio" and "promptAudio" are spoken aloud by the browser: plain text only, no URLs, no file paths, no punctuation like ? or !
+- Build from easy (single words, greetings) to harder (full sentences, situational replies)
+- Do NOT use escaped apostrophes \\' — use a regular apostrophe or rephrase
+- Do NOT wrap output in markdown code fences
+- Return ONLY a raw JSON array starting with [ and ending with ]
+- Stop at exactly 8 questions`
 }
 
 export default defineConfig({
