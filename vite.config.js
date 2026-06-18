@@ -109,6 +109,8 @@ QUESTION TYPES — use ALL four types across the 8 questions, with at least 2 of
 
 Every question MUST include a "scenario" field: 1–2 sentences in ${nativeLanguage} describing the exact real-life moment the user is in right now — specific enough to be useful. Bad example: "You are in a café." Good example: "You've just spotted a café near the Eiffel Tower and you want to sit down and order. A waiter walks over." Make every scenario feel immersive and tied to the destination and the user's interests.
 
+ALIGNMENT RULE: The scenario and the question content MUST read as one continuous story. The "english" field, "prompt", or "audio" must be the natural next sentence after the scenario — as if the scenario sets the stage and the question content is what happens next. A reader should never feel a disconnect between the scene description and the phrase being practiced. The scenario explains WHY the user would say or hear this exact phrase right now.
+
 TYPE 1 — "translate"
 The user reads a sentence in ${nativeLanguage} and picks the correct target-language translation.
 Fields:
